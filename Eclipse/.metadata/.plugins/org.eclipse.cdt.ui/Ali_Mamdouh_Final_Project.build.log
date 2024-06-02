@@ -1,0 +1,51 @@
+00:24:46 **** Incremental Build of configuration Debug for project Ali_Mamdouh_Final_Project ****
+make all 
+Building file: ../Ali_Mamdouh_Final_Project.c
+Invoking: AVR Compiler
+avr-gcc -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega32 -DF_CPU=8000000UL -MMD -MP -MF"Ali_Mamdouh_Final_Project.d" -MT"Ali_Mamdouh_Final_Project.o" -c -o "Ali_Mamdouh_Final_Project.o" "../Ali_Mamdouh_Final_Project.c"
+In file included from ../Ali_Mamdouh_Final_Project.c:12:
+d:/eclipse/lib/gcc/../../avr/include/util/delay.h:90:3: warning: #warning "Compiler optimizations disabled; functions from <util/delay.h> won't work as designed"
+Finished building: ../Ali_Mamdouh_Final_Project.c
+ 
+Building file: ../keypad.c
+Invoking: AVR Compiler
+avr-gcc -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega32 -DF_CPU=8000000UL -MMD -MP -MF"keypad.d" -MT"keypad.o" -c -o "keypad.o" "../keypad.c"
+In file included from ../keypad.c:14:
+d:/eclipse/lib/gcc/../../avr/include/util/delay.h:90:3: warning: #warning "Compiler optimizations disabled; functions from <util/delay.h> won't work as designed"
+Finished building: ../keypad.c
+ 
+Building target: Ali_Mamdouh_Final_Project.elf
+Invoking: AVR C Linker
+avr-gcc -Wl,-Map,Ali_Mamdouh_Final_Project.map -mmcu=atmega32 -o "Ali_Mamdouh_Final_Project.elf"  ./Ali_Mamdouh_Final_Project.o ./gpio.o ./keypad.o ./lcd.o   
+Finished building target: Ali_Mamdouh_Final_Project.elf
+ 
+Invoking: AVR Create Extended Listing
+avr-objdump -h -S Ali_Mamdouh_Final_Project.elf  >"Ali_Mamdouh_Final_Project.lss"
+Finished building: Ali_Mamdouh_Final_Project.lss
+ 
+Create Flash image (ihex format)
+avr-objcopy -R .eeprom -R .fuse -R .lock -R .signature -O ihex Ali_Mamdouh_Final_Project.elf  "Ali_Mamdouh_Final_Project.hex"
+Finished building: Ali_Mamdouh_Final_Project.hex
+ 
+Create eeprom image (ihex format)
+avr-objcopy -j .eeprom --no-change-warnings --change-section-lma .eeprom=0 -O ihex Ali_Mamdouh_Final_Project.elf  "Ali_Mamdouh_Final_Project.eep"
+Finished building: Ali_Mamdouh_Final_Project.eep
+ 
+Invoking: Print Size
+avr-size --format=avr --mcu=atmega32 Ali_Mamdouh_Final_Project.elf
+AVR Memory Usage
+----------------
+Device: atmega32
+
+Program:    8532 bytes (26.0% Full)
+(.text + .data + .bootloader)
+
+Data:         18 bytes (0.9% Full)
+(.data + .bss + .noinit)
+
+
+Finished building: sizedummy
+ 
+
+00:24:47 Build Finished. 0 errors, 2 warnings. (took 1s.10ms)
+
