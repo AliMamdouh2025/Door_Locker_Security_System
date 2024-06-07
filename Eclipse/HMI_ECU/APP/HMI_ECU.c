@@ -50,7 +50,7 @@ void EnterPasswordAgain(void)
 {
 	if(num != 0) //don't enter first time only
 	{
-		while(UART_recieveByte() != MC2_READY){}
+		while(UART_recieveByte() != MC2_READY){} //Get Ready Ack from MCU2 to prevent UART hardware buffer overflow and send data to it.
 		UART_sendByte(CHECK_PASSWORDS_MATCHING);
 		num = 1;
 	}
@@ -106,17 +106,17 @@ uint8 Check_Passwords_Matching(void)
 
 	for(i = 0; i < 5; i++) //sending first password
 	{
-		while(UART_recieveByte() != MC2_READY){}
+		while(UART_recieveByte() != MC2_READY){} //Get Ready Ack from MCU2 to prevent UART hardware buffer overflow and send data to it.
 		UART_sendByte(Pass[i]);
 	}
 
 	for(i = 0; i < 5; i++) //sending second password
 	{
-		while(UART_recieveByte() != MC2_READY){}
+		while(UART_recieveByte() != MC2_READY){} //Get Ready Ack from MCU2 to prevent UART hardware buffer overflow
 		UART_sendByte(pass[i]);
 	}
 
-	UART_sendByte(MC1_READY);
+	UART_sendByte(MC1_READY); //Send Ready Ack To MCU2 to alert it that MCU1 can receive data to prevent UART hardware buffer overflow.
 	return UART_recieveByte(); //return matched or not
 }
 
@@ -128,16 +128,16 @@ uint8 Check_Password(void)
 {
 	uint8 i;
 	Enter_Password(Pass);
-	while(UART_recieveByte() != MC2_READY){}
-	UART_sendByte(CHECK_PASSWORD); //to notice MC2 to enter CHECK_PASSWORD() function
+	while(UART_recieveByte() != MC2_READY){} //Get Ready Ack from MCU2 to prevent UART hardware buffer overflow and send data to it.
+	UART_sendByte(CHECK_PASSWORD); //to notice MC2 to enter CHECK_PASSWORD() function.
 
 	for(i = 0; i < 5; i++) //sending password
 	{
-		while(UART_recieveByte() != MC2_READY){}
+		while(UART_recieveByte() != MC2_READY){} //Get Ready Ack from MCU2 to prevent UART hardware buffer overflow and send data to it.
 		UART_sendByte(Pass[i]);
 	}
 
-	UART_sendByte(MC1_READY);
+	UART_sendByte(MC1_READY); //Send Ready Ack To MCU2 to alert it that MCU1 can receive data to prevent UART hardware buffer overflow.
 	return UART_recieveByte(); //return matched or not
 }
 
@@ -153,7 +153,7 @@ uint8 Alert(void)
 		}
 	}
 
-	while(UART_recieveByte() != MC2_READY){}
+	while(UART_recieveByte() != MC2_READY){} //Get Ready Ack from MCU2 to prevent UART hardware buffer overflow and send data to it.
 	UART_sendByte(ALERT); //send to MC2 to enter Alert() function
 
 	LCD_clearScreen();
@@ -205,7 +205,7 @@ void Main_Options(void)
 		if(check == MATCHED_PASS)
 		{
 			Enter_Password(Pass);
-			while(UART_recieveByte() != MC2_READY){}
+			while(UART_recieveByte() != MC2_READY){} //Get Ready Ack from MCU2 to prevent UART hardware buffer overflow and send data to it.
 			UART_sendByte(CHECK_PASSWORDS_MATCHING);
 			Check_Matching  = Check_Passwords_Matching();
 		}
@@ -214,7 +214,7 @@ void Main_Options(void)
 			if(Alert() == MATCHED_PASS) //if user enter the write password in second or third trial door unlock,else system alert then return to main options
 			{
 				Enter_Password(Pass);
-				while(UART_recieveByte() != MC2_READY){}
+				while(UART_recieveByte() != MC2_READY){} //Get Ready Ack from MCU2 to prevent UART hardware buffer overflow and send data to it.
 				UART_sendByte(CHECK_PASSWORDS_MATCHING);
 				Check_Matching  = Check_Passwords_Matching();
 			}
@@ -278,7 +278,7 @@ void Door_unlocking(void)
 	LCD_clearScreen();
 	LCD_displayStringRowColumn(0,0,"Door Unlocking");
 	Flag_Of_locking = 0; //to not overwrite main options over "Door Unlocking" message on LCD
-	while(UART_recieveByte() != MC2_READY){}
+	while(UART_recieveByte() != MC2_READY){} //Get Ready Ack from MCU2 to prevent UART hardware buffer overflow and send data to it.
 	UART_sendByte(MOTOR_UNLOCKING); //send to MC2 to unlock door by enter Motor_Unlock() function
 	while(Flag_Of_locking == 0){}
 }
@@ -293,7 +293,7 @@ void Door_locking(void)
 	LCD_clearScreen();
 	LCD_displayStringRowColumn(0,0,"Door locking");
 	Flag_Of_locking = 0; //to not overwrite main options over "Door Unlocking" message on LCD
-	while(UART_recieveByte() != MC2_READY){}
+	while(UART_recieveByte() != MC2_READY){} //Get Ready Ack from MCU2 to prevent UART hardware buffer overflow and send data to it.
 	UART_sendByte(MOTOR_LOCKING); //send to MC2 to lock door by enter Motor_lock() function
 	while(Flag_Of_locking == 0){}
 }
@@ -307,7 +307,7 @@ void Door_Open(void)
 	LCD_clearScreen();
 	LCD_displayStringRowColumn(0,0,"Door is Open");
 	Flag_Of_locking = 0; //to not overwrite main options over "Door Unlocking" message on LCD
-	while(UART_recieveByte() != MC2_READY){}
+	while(UART_recieveByte() != MC2_READY){} //Get Ready Ack from MCU2 to prevent UART hardware buffer overflow and send data to it.
 	UART_sendByte(MOTOR_STOP); //send to MC2 to open door by enter Motor_Stop() function
 	while(Flag_Of_locking == 0){}
 }
