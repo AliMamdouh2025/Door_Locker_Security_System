@@ -34,8 +34,10 @@ uint8 num = 0;
  ***************************************************************************/
 void init(void)
 {
-	SREG |= (1<<7); //Global Interrupt Enable to request interrupt
+	/*Global Interrupt Enable to request interrupt*/
+	SREG |= (1<<7); 
 
+	/*UART initialization*/
 	UART_ConfigType Uart;
 	Uart.baud_rate = 9600;
 	Uart.bit_data = Data_8bit;
@@ -43,6 +45,7 @@ void init(void)
 	Uart.stop_bit = Stop_1bit;
 	UART_init(&Uart);
 
+	/*LCD Initialization*/
 	LCD_init();	
 }
 
