@@ -46,7 +46,7 @@ void init(void)
 	UART_init(&Uart);
 
 	/*I2C initialization*/
-	TWI_ConfigType configTWI = {0b00000010,Bit_Rate_400K};
+	TWI_ConfigType configTWI = {0b00000010, Bit_Rate_400K};
 	TWI_init(&configTWI);
 
 	/*Buzzer initialization*/
