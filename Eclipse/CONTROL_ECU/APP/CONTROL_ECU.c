@@ -34,8 +34,10 @@ uint8 Flag_Of_locking = 1;
  ***************************************************************************/
 void init(void)
 {
-	SREG |= (1<<7); //Global Interrupt Enable to request interrupt
+	/*Global Interrupt Enable to request interrupt*/
+	SREG |= (1<<7); 
 
+	/*UART initialization*/
 	UART_ConfigType Uart;
 	Uart.baud_rate = 9600;
 	Uart.bit_data = Data_8bit;
@@ -43,17 +45,21 @@ void init(void)
 	Uart.stop_bit = Stop_1bit;
 	UART_init(&Uart);
 
+	/*I2C initialization*/
 	TWI_ConfigType configTWI = {0b00000010,Bit_Rate_400K};
 	TWI_init(&configTWI);
 
+	/*Buzzer initialization*/
 	Buzzer_init();
+
+	/*Motor initialization*/
 	DcMotor_Init();
 }
 
 
 uint32 InitializeCommunication(void)
 {
-	UART_sendByte(MC2_READY); //Initialize communication
+	UART_sendByte(MC2_READY); //Send Ready Ack To MCU1 to alert it that MCU2 can receive data to prevent UART hardware buffer overflow.
 	return UART_recieveByte(); //recieve from MC1 which function to enter	
 }
 
@@ -91,25 +97,24 @@ void SelectAction(uint32  choose_function)
 
 uint8 Check_Passwords_Matching(void)
 {
-	uint8 i,pass1[5],pass2[5];
-	for(i=0 ; i<5 ; i++) //recieve first password
+	uint8 i, pass1[5], pass2[5];
+	for(i = 0 ; i < 5 ; i++) //Recieve first password
 	{
-		UART_sendByte(MC2_READY);
-		pass1[i]=UART_recieveByte();
+		UART_sendByte(MC2_READY); //Send Ready Ack To MCU1 to alert it that MCU2 can receive data to prevent UART hardware buffer overflow.
+		pass1[i] = UART_recieveByte();
 	}
 
-	for(i=0 ; i<5 ; i++) //recieve second password
+	for(i = 0 ; i < 5 ; i++) //Recieve second password
 	{
-		UART_sendByte(MC2_READY);
-		pass2[i]=UART_recieveByte();
+		UART_sendByte(MC2_READY); //Send Ready Ack To MCU1 to alert it that MCU2 can receive data to prevent UART hardware buffer overflow.
+		pass2[i] = UART_recieveByte();
 	}
 
-	for(i=0 ; i<5 ; i++) //check that the two passwords are equal
+	for(i = 0 ; i < 5 ; i++) //Check that the two passwords are equal
 	{
 		if(pass1[i] != pass2[i])
 		{
-			while(UART_recieveByte() != MC1_READY){}
-			UART_sendByte(UNMATCHED_PASS);
+			while(UART_recieveByte() != MC1_READY){} //Get Ready Ack from MCU1 to prevent UART hardware buffer overflow and send data to it.
 			return UNMATCHED_PASS;
 		}
 	}
@@ -120,7 +125,7 @@ uint8 Check_Passwords_Matching(void)
 		_delay_ms(10);
 	}
 
-	while(UART_recieveByte() != MC1_READY){}
+	while(UART_recieveByte() != MC1_READY){} //Get Ready Ack from MCU1 to prevent UART hardware buffer overflow and send data to it.
 	UART_sendByte(MATCHED_PASS);
 	return MATCHED_PASS;
 }
@@ -131,31 +136,31 @@ uint8 Check_Passwords_Matching(void)
 
 void Check_Password(void)
 {
-	uint8 i,pass[5],pass2[5];
+	uint8 i, pass[5], pass2[5];
 
-	for(i = 0; i < 5; i++) //taking password from MC1(from user)
+	for(i = 0; i < 5; i++) //Taking password from MC1(from user)
 	{
-		UART_sendByte(MC2_READY);
+		UART_sendByte(MC2_READY); //Get Ready Ack from MCU1 to prevent UART hardware buffer overflow and send data to it.
 		pass2[i] = UART_recieveByte();
 	}
 
-	for(i = 0; i < 5; i++) //taking password from eeprom
+	for(i = 0; i < 5; i++) //Taking password from eeprom
 	{
 		EEPROM_readByte(0x0311+i, pass+i);
 		_delay_ms(10);
 	}
 
-	for(i = 0; i < 5; i++) //comparing the two passwords
+	for(i = 0; i < 5; i++) //Comparing the two passwords
 	{
 		if(pass[i] != pass2[i])
 		{
-			while(UART_recieveByte() != MC1_READY){}
+			while(UART_recieveByte() != MC1_READY){} //Get Ready Ack from MCU1 to prevent UART hardware buffer overflow and send data to it.
 			UART_sendByte(UNMATCHED_PASS);
 			return;
 		}
 	}
 
-	while(UART_recieveByte() != MC1_READY){}
+	while(UART_recieveByte() != MC1_READY){} //Send Ready Ack To MCU1 to alert it that MCU2 can receive data to prevent UART hardware buffer overflow.
 	UART_sendByte(MATCHED_PASS);
 }
 
