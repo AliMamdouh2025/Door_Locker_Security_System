@@ -19,8 +19,11 @@ int main(void)
 {
 	uint8 Check_Matching = UNMATCHED_PASS; //initialize with unmatched to initially enter Check_Passwords_Matching() function
 
-	init(); //initialize System
-	Check_Matching = EnterAndCheckPassword(); //Take Password and return if it is correct or not
+	/*initialize System*/
+	init(); 
+
+	/*Take Password and return if it is correct or not*/
+	Check_Matching = EnterAndCheckPassword(); 
 
 	while(1)
 	{
