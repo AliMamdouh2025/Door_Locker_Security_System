@@ -57,11 +57,18 @@ void init(void)
 }
 
 
+
+
+
 uint32 InitializeCommunication(void)
 {
 	UART_sendByte(MC2_READY); //Send Ready Ack To MCU1 to alert it that MCU2 can receive data to prevent UART hardware buffer overflow.
 	return UART_recieveByte(); //recieve from MC1 which function to enter	
 }
+
+
+
+
 
 void SelectAction(uint32  choose_function)
 {
@@ -93,6 +100,9 @@ void SelectAction(uint32  choose_function)
 
 	}
 }
+
+
+
 
 
 uint8 Check_Passwords_Matching(void)
@@ -238,6 +248,8 @@ void Motor_Unlock(void)
 	while(Flag_Of_locking == 0){}
 	DcMotor_Rotate(STOP,0);
 }
+
+
 
 
 
